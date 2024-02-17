@@ -29,7 +29,7 @@ var offscreenCanvas = document.getElementById('offscreenCanvas');
 var offscreenCtx = offscreenCanvas.getContext('2d');
 
 // these are placeholders - i map this later on in the set canvas size
-var brushSize = (blurAmount = 50);
+var brushSize = 50;
 var brushAdjustment = 800;
 
 canvas.addEventListener('mousedown', handleMouseDown);
@@ -57,7 +57,7 @@ function populateBrushSize() {
 }
 
 function populateBlurAmount() {
-    blurAmount = Math.floor(this.value);
+    brushSize = Math.floor(this.value);
 }
 
 
@@ -274,9 +274,9 @@ function handleMouseUp(e) {
     isDown = false;
     lastPos = null;
     if (painting != 'paint') {
-        var tempBlurAmount = blurAmount;
+        var tempBlurAmount = brushSize;
         if (painting == 'undo') {
-            blurAmount = 0;
+            brushSize = 0;
         }
 
         blurredCtx.drawImage(rotationCanvas, 0, 0);
@@ -294,7 +294,7 @@ function handleMouseUp(e) {
             0,
             blurredCanvas.width,
             blurredCanvas.height,
-            blurAmount
+            brushSize
         );
         tempCtx.save();
         tempCtx.globalCompositeOperation = 'source-in';
@@ -307,7 +307,7 @@ function handleMouseUp(e) {
         ctx.globalCompositeOperation = 'destination-over';
         ctx.drawImage(holderCanvas, 0, 0);
         ctx.restore();
-        blurAmount = tempBlurAmount;
+        brushSize = tempBlurAmount;
     }
 }
 

@@ -9,25 +9,21 @@ dropContainer.ondragover = dropContainer.ondragenter = function (evt) {
     evt.preventDefault();
 };
 
-function onDrop(evt) {
+dropContainer.ondrop = e => {
     // pretty simple -- but not for IE :(
     fileInput.files = evt.dataTransfer.files;
 
     // If you want to use some of the dropped files
     const dT = new DataTransfer();
-    dT.items.add(evt.dataTransfer.files[0]);
+    dT.items.add(e.dataTransfer.files[0]);
     fileInput.files = dT.files;
     // Create a new 'change' event
     const event = new Event('change');
 
     // Dispatch it.
     fileInput.dispatchEvent(event);
-    evt.preventDefault();
+    e.preventDefault();
 }
-
-dropContainer.ondrop = function (evt) {
-    onDrop(evt);
-};
 
 window.addEventListener(
     'dragover',
@@ -102,28 +98,24 @@ function onFileChange(e) {
     var file = e.target.files[0];
     if (file && file.name) {
         EXIF.getData(file, function () {
-            var exifData = JSON.stringify(this.exifdata, null, 4);
-            if (exifData) {
-                if (exifData.toString() == '{}') {
+            var data = JSON.stringify(this.exifdata, null, 4);
+            if (data) {
+                if (data.toString() == '{}') {
                     exifInformationHolder.innerHTML =
                         "<center>No EXIF data found in image '" +
                         file.name +
                         "'.<br><br></center>";
                     var btn = document.createElement('BUTTON');
-                    btn.id = 'continueButton';
+                    btn.id = 'clear-data';
                     btn.innerHTML = 'Continue to edit image';
                     btn.onclick = goToBlur;
                     exifInformationHolder.appendChild(btn);
                 } else {
-                    var exifScrollDiv = document.createElement('div');
-                    exifScrollDiv.id = 'exifScrollDiv';
-                    exifScrollDiv.innerHTML =
-                        file.name + '<pre>' + exifData + '</pre>';
-                    exifInformationHolder.innerHTML = 'Exif Data:<br><br>';
-                    exifInformationHolder.appendChild(exifScrollDiv);
+                    var exifData = document.querySelector('#exifData');
+                    exifData.innerHTML = file.name + '<br>' + data;
+                    exifInformationHolder.appendChild(exifData);
 
-                    var btn = document.createElement('BUTTON');
-                    btn.id = 'continueButtonExif';
+                    var btn = document.querySelector('#clear-data');
                     btn.innerHTML = 'Scrub Exif Data';
                     btn.onclick = scrubData;
                     exifInformationHolder.appendChild(btn);
