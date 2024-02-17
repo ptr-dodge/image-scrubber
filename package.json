@@ -1,0 +1,27 @@
+{
+    "name": "image-scrubber",
+    "version": "1.0.0",
+    "description": "This is a tool for anonymizing photographs taken at protests.",
+    "scripts": {
+        "cleanup": "prettier --write **/*.{js,css,html}"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/everestpipkin/image-scrubber.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/everestpipkin/image-scrubber/issues"
+    },
+    "homepage": "https://github.com/everestpipkin/image-scrubber#readme",
+    "devDependencies": {
+        "prettier": "2.0.5"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "semi": true,
+        "singleQuote": true
+    }
+}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <link rel="manifest" href="scripts/manifest.json" />
+        <link rel="apple-touch-icon" href="scrubber_logo_ios_homescreen.png" />
+        <title>Image Scrubber</title>
+    </head>
+    <link rel="stylesheet" type="text/css" href="styles/index.css" />
+    <script>
+        // register service worker
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker
+                .register('sw.js', { scope: '/image-scrubber/' })
+                .then(function (reg) {
+                    if (reg.installing) {
+                        console.log('Service worker installing');
+                    } else if (reg.waiting) {
+                        console.log('Service worker installed');
+                    } else if (reg.active) {
+                        console.log('Service worker active');
+                    }
+                })
+                .catch(function (error) {
+                    // registration failed
+                    console.log('Registration failed with ' + error);
+                });
+        }
+    </script>
+    <body>
+        <div id="drop-zone">
+            <svg
+                class="icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 10 10"
+            >
+                <path
+                    d="M5,3 l0,4 M3,5 l4,0"
+                    fill="none"
+                    stroke="#fff"
+                    stroke-width="0.5"
+                />
+            </svg>
+        </div>
+        <div id="topBar">
+            <div class="topBarDiv">
+                <label for="file-input" class="customFileOpen controlButton"
+                    >Open&nbsp;Image&nbsp;📂</label
+                >
+                <input id="file-input" type="file" />
+            </div>
+
+            <a
+                id="saveButton"
+                onclick="saveImage(this)"
+                class="topBarDiv controlButton"
+                >Save&nbsp;Image&nbsp;💾</a
+            >
+
+            <div id="rotate" class="topBarDiv controlButton">
+                Rotate&nbsp;Image&nbsp;⤾
+            </div>
+
+            <div id="paintBlur" class="topBarDiv" class="customFileOpen">
+                <form id="paintForm">
+                    <input
+                        type="radio"
+                        id="Paint"
+                        name="paintingAction"
+                        value="paint"
+                    />
+                    <label for="Paint">Paint</label>&nbsp;<button data-jscolor="{valueElement:null,value:'000000'}" id="paintColor" style="width:20px; height:20px;"></button><br />
+                    <input
+                        type="radio"
+                        id="Blur"
+                        name="paintingAction"
+                        value="blur"
+                        checked
+                    />
+                    <label for="Blur">Blur&nbsp;</label><br />
+                    <input
+                        type="radio"
+                        id="Undo"
+                        name="paintingAction"
+                        value="undo"
+                    />
+                    <label for="Undo">Undo&nbsp;</label>
+                </form>
+            </div>
+            <div id="brushType" class="topBarDiv">
+                <form id="brushForm">
+
+                     <input type="radio"
+                            id="Round"
+                            name="useBrush"
+                            value="round" checked>
+                     <label for="Round">Brush&nbsp;</label><br>
+
+                    <input type="radio"
+                            id="Area"
+                            name="useBrush"
+                            value="area">
+                     <label for="Area">Rectangle</label><br>
+
+                     <input type="radio"
+                            id="Tap"
+                            name="useBrush"
+                            value="tap">
+                     <label for="Tap">Tap&nbsp;</label><br>
+
+                </form>
+            </div>
+            <div id="brushSizeDiv" class="topBarDiv">
+                <center>
+                    Brush&nbsp;Size<br />
+                    <input
+                        type="range"
+                        min="10"
+                        max="100"
+                        value="55"
+                        class="slider"
+                        id="brushSizeSlider"
+                    />
+                     Blur&nbsp;Radius<br />
+                    <input
+                        type="range"
+                        min="40"
+                        max="150"
+                        value="75"
+                        class="slider"
+                        id="blurAmountSlider"
+                    />
+                </center>
+            </div>
+
+        </div>
+
+        <button id="about">About</button>
+
+        <div id="imageScrubberInfo">
+            <pre>
+    <center><b>Image Scrubber</b></center>
+
+This is a tool for anonymizing photographs taken at protests.
+
+It will remove identifying metadata (<a href="https://en.wikipedia.org/wiki/Exif">Exif data</a>) from photographs, and also allow you to selectively blur parts of the image to cover faces and other identifiable information.
+
+Click or drag onto the open button to open a photograph. The program will display the data it is removing.
+
+Click okay, and you can then save the scrubbed image by hitting save or right clicking on it and saving it. Maximum size is 2500x2500 pixels - larger images will be scaled down.
+
+You can select between painting over the image or blurring it out. Dragging on the image will paint on or blur it. You can change your brush size via the slider. The blur function runs on top of shuffled, noisy, upscaled pixels and is fairly secure but sensitive information should be covered with the paint tool.
+
+This tool works offline: on a phone you can load the page or add it to the homescreen, then turn on airplane mode (or turn off wifi/data) before opening any pictures. On a computer, <a href="https://github.com/everestpipkin/image-scrubber/archive/main.zip">download</a> the zipped code, open the folder, and open index.html in a browser with the internet turned off.
+
+<strong>All processing happens directly in the browser- no information is stored or sent anywhere.</strong>
+
+
+Bug reports or questions to: everest.pipkin@gmail.com
+
+Github repo at <a href="https://github.com/everestpipkin/image-scrubber" target="_blank">github.com/everestpipkin/image-scrubber</a>
+
+If you want other ways to cover your digital footprint, I've assembled a list of resources: via <a href="https://docs.google.com/document/d/1615pZB11BhsR0KtvyiXfzfMUBlxZi47HzzhWHIRpxwU/edit" target="_blank">Google Doc</a> or <a href="https://pastebin.com/TPgtvmVB" target="_blank">Pastebin</a>.
+    </pre>
+        </div>
+
+        <div id="exifInformationHolder"></div>
+        <canvas id="imageCanvas"></canvas>
+        <canvas id="tempCanvas"></canvas>
+        <canvas id="holderCanvas"></canvas>
+        <canvas id="rotationCanvas"></canvas>
+        <canvas id="blurredCanvas"></canvas>
+        <canvas id="offscreenCanvas"></canvas>
+
+        <script type="text/javascript" src="scripts/jscolor.js"></script>
+        <script type="text/javascript" src="scripts/exif.js"></script>
+        <script type="text/javascript" src="scripts/openImage.js"></script>
+        <script type="text/javascript" src="scripts/stackblur.js"></script>
+        <script type="text/javascript" src="scripts/js.js"></script>
+
+    </body>
+</html>

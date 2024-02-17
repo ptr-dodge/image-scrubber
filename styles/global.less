@@ -1,0 +1,73 @@
+// out: false
+
+:root {
+    font-size: 1em;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .flex(@jfy, @aln, @dir: row) {
+    display: flex;
+    & when (@dir) {
+      flex-direction: @dir;
+    }
+    justify-content: @jfy;
+    align-items: @aln;
+  }
+  
+  @dark-color: {
+    a: #101010;
+    b: #151515;
+    c: #202020;
+    d: #252525;
+    e: #303030;
+    f: #353535;
+  };
+  
+  @light-color: {
+    a: #f5f5f5;
+    b: #e6e6e6;
+    c: #e7e7e7;
+    d: #dddddd;
+    e: #cccccc;
+    f: #adadad;
+  };
+  
+  @theme-color: {
+    1: #de8190;
+    2: #6bbcdf;
+    3: #ded754;
+  };
+  
+  @font: {
+    default: sans-serif;
+    heading: "Roboto, sans-serif";
+    body: Helvetica;
+    mono: "Courier New", monospace;
+  };
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  a,
+  div,
+  section {
+    font-family: @font[default];
+  }
+  
+  body {
+    width: 100vw;
+    height: 100vh;
+    background: @dark-color[c];
+    color: @light-color[b];
+    font-size: 1rem;
+    font-family: @font[body];
+  }
