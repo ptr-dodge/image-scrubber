@@ -48,7 +48,7 @@ brushSizeDiv.onchange = populateBrushSize;
 var blurAmountDiv = document.getElementById('blurAmountSlider');
 blurAmountDiv.onchange = populateBlurAmount;
 
-var paintColorForm = document.getElementById("paintColor");
+var paintColorForm = document.getElementById("paint-color");
 
 function populateBrushSize() {
     var biggerDimension = Math.max(canvas.width, canvas.height);
@@ -108,8 +108,8 @@ function setCursor() {
 	}
 }
 
-// get list of radio buttons with name 'paintForm'
-var paintFormElements = document.forms['paintForm'].elements['paintingAction'];
+// get list of radio buttons with name 'paint-form'
+var paintFormElements = document.forms['paint-form'].elements['painting-action'];
 
 // loop through list
 for (var i = 0, len = paintFormElements.length; i < len; i++) {
@@ -121,14 +121,14 @@ for (var i = 0, len = paintFormElements.length; i < len; i++) {
     };
 }
 
-var paintColorButton = document.getElementById("paintColor");
+var paintColorButton = document.getElementById("paint-color");
 paintColorButton.onclick = function () {
-        document.getElementById("Paint").checked = true;
+        document.getElementById("paint").checked = true;
         painting = "paint";
     };
 
 // same as above, but for 'useBrush' options
-var brushFormElements = document.forms['brushForm'].elements['useBrush'];
+var brushFormElements = document.forms['brush-form'].elements['useBrush'];
 
 for (var i = 0, len = brushFormElements.length; i < len; i++) {
 

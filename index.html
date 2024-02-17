@@ -16,38 +16,38 @@
             <path d="M5,3 l0,4 M3,5 l4,0" fill="none" stroke="#fff" stroke-width="0.5"></path>
         </svg>
     </div>
-    <div id="topBar">
-        <div class="topBarDiv">
-            <label for="file-input" class="customFileOpen controlButton">Open&nbsp;Image&nbsp;📂</label>
+    <div id="tool-bar">
+        <div class="tool-bar-item">
+            <label for="file-input" class="file-open label-item">Open Image <span class="text-icon">📂</span></label>
             <input id="file-input" type="file" value="">
         </div>
-        <a id="saveButton" onclick="saveImage(this)" class="topBarDiv controlButton">Save&nbsp;Image&nbsp;💾</a>
-        <div id="rotate" class="topBarDiv controlButton">Rotate&nbsp;Image&nbsp;⤾</div>
-        <div id="paintBlur" class="topBarDiv customFileOpen">
-            <form id="paintForm">
-                <input type="radio" id="Paint" name="paintingAction" value="paint">
-                <label for="Paint">Paint</label>&nbsp;<button data-jscolor="{valueElement:null,value:'000000'}"
-                    id="paintColor" style="width:20px; height:20px;"></button><br>
-                <input type="radio" id="Blur" name="paintingAction" value="blur" checked>
-                <label for="Blur">Blur&nbsp;</label><br>
-                <input type="radio" id="Undo" name="paintingAction" value="undo">
-                <label for="Undo">Undo&nbsp;</label>
+        <a id="save" onclick="saveImage(this)" class="tool-bar-item label-item">Save Image <span class="text-icon">💾</span></a>
+        <div id="rotate" class="tool-bar-item label-item">Rotate Image <span class="text-icon">⤾</span></div>
+        <div id="paint-blur" class="tool-bar-item file-open">
+            <form id="paint-form">
+                <input type="radio" id="paint" name="painting-action" value="paint">
+                <label for="paint">Paint</label><button data-jscolor="{valueElement:null,value:'000000'}"
+                    id="paint-color" style="width:20px; height:20px;"></button><br>
+                <input type="radio" id="blur" name="painting-action" value="blur" checked>
+                <label for="blur">Blur </label><br>
+                <input type="radio" id="undo" name="painting-action" value="undo">
+                <label for="undo">Undo </label>
             </form>
         </div>
-        <div id="brushType" class="topBarDiv">
-            <form id="brushForm">
-                <input type="radio" id="Round" name="useBrush" value="round" checked>
-                <label for="Round">Brush&nbsp;</label><br>
+        <div id="brush-type" class="tool-bar-item">
+            <form id="brush-form">
+                <input type="radio" id="round" name="useBrush" value="round" checked>
+                <label for="round">Brush </label><br>
                 <input type="radio" id="Area" name="useBrush" value="area">
                 <label for="Area">Rectangle</label><br>
                 <input type="radio" id="Tap" name="useBrush" value="tap">
-                <label for="Tap">Tap&nbsp;</label><br>
+                <label for="Tap">Tap </label><br>
             </form>
         </div>
-        <div id="brushSizeDiv" class="topBarDiv">
-            <label for="brushSizeSlider">Brush&nbsp;Size</label><br>
+        <div id="brushSizeDiv" class="tool-bar-item">
+            <label for="brushSizeSlider">Brush Size</label><br>
             <input type="range" min="10" max="100" value="55" class="slider" id="brushSizeSlider"><br>
-            <label for="blurAmountSlider">Blur&nbsp;Radius</label><br>
+            <label for="blurAmountSlider">Blur Radius</label><br>
             <input type="range" min="40" max="150" value="75" class="slider" id="blurAmountSlider">
         </div>
     </div>
