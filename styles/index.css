@@ -150,6 +150,13 @@ body:not(.dragging) #drop-zone {
 #about-infoa:focus {
   background: #de8190;
 }
+#about-info #logo {
+  width: 5rem;
+  margin: -0.5rem;
+  background-color: #303030;
+  border-radius: 50%;
+  border: 10px solid #252525;
+}
 #about-info #about-list {
   list-style: none;
 }
@@ -212,7 +219,7 @@ body:not(.dragging) #drop-zone {
 #holder,
 #rotation,
 #blurred,
-#offscreen {
+#offscreenCanvas {
   position: absolute;
   top: -1000px;
   display: none;
