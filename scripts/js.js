@@ -10,22 +10,22 @@ var mouseX_start;
 var mouseY_start;
 var lastPos;
 
-var canvas = document.getElementById('imageCanvas');
+var canvas = document.getElementById('image');
 var ctx = canvas.getContext('2d');
 
-var tempCanvas = document.getElementById('tempCanvas');
+var tempCanvas = document.getElementById('temp');
 var tempCtx = tempCanvas.getContext('2d');
 
-var holderCanvas = document.getElementById('holderCanvas');
+var holderCanvas = document.getElementById('holder');
 var holderCtx = holderCanvas.getContext('2d');
 
-var rotationCanvas = document.getElementById('rotationCanvas');
+var rotationCanvas = document.getElementById('rotation');
 var rotationCtx = rotationCanvas.getContext('2d');
 
-var blurredCanvas = document.getElementById('blurredCanvas');
+var blurredCanvas = document.getElementById('blurred');
 var blurredCtx = blurredCanvas.getContext('2d');
 
-var offscreenCanvas = document.getElementById('offscreenCanvas');
+var offscreenCanvas = document.getElementById('offscreen');
 var offscreenCtx = offscreenCanvas.getContext('2d');
 
 // these are placeholders - i map this later on in the set canvas size
@@ -142,7 +142,7 @@ for (var i = 0, len = brushFormElements.length; i < len; i++) {
 }
 
 function saveImage() {
-    document.getElementById('imageCanvas').toBlob(
+    document.getElementById('image').toBlob(
         function (blob) {
             var link = document.createElement('a');
 
@@ -159,12 +159,12 @@ function saveImage() {
 }
 
 function scrubData() {
-    document.getElementById('exifInformationHolder').style.display = 'none';
+    document.getElementById('exif-info').style.display = 'none';
     alert('EXIF data removed: you may now save the image');
 }
 
 function goToBlur() {
-    document.getElementById('exifInformationHolder').style.display = 'none';
+    document.getElementById('exif-info').style.display = 'none';
 }
 
 function handleMouseDown(e) {
@@ -289,7 +289,7 @@ function handleMouseUp(e) {
         //blur command is here - undo brush is this same command, but run w radius zero
         
         stackBlurCanvasRGBA(
-            'blurredCanvas',
+            'blurred',
             0,
             0,
             blurredCanvas.width,
@@ -411,7 +411,7 @@ function getMousePos(canvas, evt) {
 
 var button = document.getElementById('about');
 button.onclick = function () {
-    var imageScrubberInfo = document.getElementById('imageScrubberInfo');
+    var imageScrubberInfo = document.getElementById('about-info');
     if (imageScrubberInfo.style.display == 'none') {
         imageScrubberInfo.style.display = 'block';
     } else {

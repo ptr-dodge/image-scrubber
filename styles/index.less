@@ -7,7 +7,7 @@
 @import 'global.less';
 
 @media (max-width: 800px) {
-    #imageScrubberInfo {
+    #about-info {
         max-height: 75%;
     }
 
@@ -19,7 +19,7 @@
         border: none;
     }
 
-    #imageCanvas {
+    #image {
         position: absolute;
         top: 60%;
         max-height: 75%;
@@ -113,7 +113,7 @@ body {
     padding: .5rem;
 }
 
-#imageScrubberInfo {
+#about-info {
     width: 60vw; // 60% of the viewport width
     padding: 1em;
     margin: 1rem 0;
@@ -146,7 +146,7 @@ body {
     }
 }
 
-#exifInformationHolder {
+#exif-info {
     position: absolute;
     transform: translateY(-50%);
     top: 50%;
@@ -157,7 +157,7 @@ body {
     background-color: mix(@dark-color[d], transparent, 90%);
     z-index: 4;
 
-    #exifData {
+    #exif-data {
         position: inline-block;
         overflow-y: auto;
         white-space: pre-wrap;
@@ -185,7 +185,7 @@ body {
     }
 }
 
-#imageCanvas {
+#image {
     position: absolute;
     top: 56%;
     left: 50%;
@@ -196,10 +196,10 @@ body {
     cursor: crosshair;
 }
 
-#tempCanvas,
-#holderCanvas,
-#rotationCanvas,
-#blurredCanvas,
+#temp,
+#holder,
+#rotation,
+#blurred,
 #offscreenCanvas {
     position: absolute;
     top: -1000px;

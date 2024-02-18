@@ -37,7 +37,7 @@ a:visited {
   color: #df6b96;
 }
 @media (max-width: 800px) {
-  #imageScrubberInfo {
+  #about-info {
     max-height: 75%;
   }
   #tool-bar {
@@ -46,7 +46,7 @@ a:visited {
   .tool-bar-item {
     border: none;
   }
-  #imageCanvas {
+  #image {
     position: absolute;
     top: 60%;
     max-height: 75%;
@@ -131,7 +131,7 @@ body:not(.dragging) #drop-zone {
   border-radius: 0.25rem;
   padding: 0.5rem;
 }
-#imageScrubberInfo {
+#about-info {
   width: 60vw;
   padding: 1em;
   margin: 1rem 0;
@@ -146,23 +146,23 @@ body:not(.dragging) #drop-zone {
   border-radius: 1rem;
   border: 1px solid #353535;
 }
-#imageScrubberInfoa:hover,
-#imageScrubberInfoa:focus {
+#about-infoa:hover,
+#about-infoa:focus {
   background: #de8190;
 }
-#imageScrubberInfo #about-list {
+#about-info #about-list {
   list-style: none;
 }
-#imageScrubberInfo #about-list li {
+#about-info #about-list li {
   margin-left: 2em;
 }
-#imageScrubberInfo #about-list li:before {
+#about-info #about-list li:before {
   content: '—';
   font-family: monospace;
   font-weight: bold;
   padding: 0.25rem;
 }
-#exifInformationHolder {
+#exif-info {
   position: absolute;
   transform: translateY(-50%);
   top: 50%;
@@ -173,7 +173,7 @@ body:not(.dragging) #drop-zone {
   background-color: rgba(37, 37, 37, 0.9);
   z-index: 4;
 }
-#exifInformationHolder #exifData {
+#exif-info #exif-data {
   position: inline-block;
   overflow-y: auto;
   white-space: pre-wrap;
@@ -185,7 +185,7 @@ body:not(.dragging) #drop-zone {
   white-space: -o-pre-wrap;
   /* Opera 7 */
 }
-#exifInformationHolder #clear-data {
+#exif-info #clear-data {
   display: block;
   background: #252525;
   color: #de8190;
@@ -198,7 +198,7 @@ body:not(.dragging) #drop-zone {
   border-radius: 0.25rem;
   padding: 0.5rem 1rem;
 }
-#imageCanvas {
+#image {
   position: absolute;
   top: 56%;
   left: 50%;
@@ -208,11 +208,11 @@ body:not(.dragging) #drop-zone {
   z-index: -1;
   cursor: crosshair;
 }
-#tempCanvas,
-#holderCanvas,
-#rotationCanvas,
-#blurredCanvas,
-#offscreenCanvas {
+#temp,
+#holder,
+#rotation,
+#blurred,
+#offscreen {
   position: absolute;
   top: -1000px;
   display: none;

@@ -91,8 +91,8 @@ function onFileChange(e) {
     reader.readAsDataURL(e.target.files[0]);
 
     filename = document.getElementById('file-input').value;
-    var exifInformationDiv = document.getElementById('exifInformationHolder');
-    var imageScrubberInfo = document.getElementById('imageScrubberInfo');
+    var exifInformationDiv = document.getElementById('exif-info');
+    var imageScrubberInfo = document.getElementById('about-info');
     imageScrubberInfo.style.display = 'none';
     exifInformationDiv.style.display = 'block';
     var file = e.target.files[0];
@@ -101,7 +101,7 @@ function onFileChange(e) {
             var data = JSON.stringify(this.exifdata, null, 4);
             if (data) {
                 if (data.toString() == '{}') {
-                    exifInformationHolder.innerHTML =
+                    exifInformationDiv.innerHTML =
                         "<center>No EXIF data found in image '" +
                         file.name +
                         "'.<br><br></center>";
@@ -109,16 +109,16 @@ function onFileChange(e) {
                     btn.id = 'clear-data';
                     btn.innerHTML = 'Continue to edit image';
                     btn.onclick = goToBlur;
-                    exifInformationHolder.appendChild(btn);
+                    exifInformationDiv.appendChild(btn);
                 } else {
-                    var exifData = document.querySelector('#exifData');
+                    var exifData = document.querySelector('#exif-data');
                     exifData.innerHTML = file.name + '<br>' + data;
-                    exifInformationHolder.appendChild(exifData);
+                    exifInformationDiv.appendChild(exifData);
 
                     var btn = document.querySelector('#clear-data');
                     btn.innerHTML = 'Scrub Exif Data';
                     btn.onclick = scrubData;
-                    exifInformationHolder.appendChild(btn);
+                    exifInformationDiv.appendChild(btn);
                 }
             }
         });

@@ -8,6 +8,11 @@
     <link rel="manifest" href="scripts/manifest.json">
     <link rel="apple-touch-icon" href="scrubber_logo_ios_homescreen.png">
     <link rel="stylesheet" type="text/css" href="styles/index.css">
+    <script type="text/javascript" src="scripts/jscolor.js" defer></script>
+    <script type="text/javascript" src="scripts/exif.js" defer></script>
+    <script type="text/javascript" src="scripts/openImage.js" defer></script>
+    <script type="text/javascript" src="scripts/stackblur.js" defer></script>
+    <script type="text/javascript" src="scripts/js.js" defer></script>
 </head>
 
 <body>
@@ -21,7 +26,8 @@
             <label for="file-input" class="file-open label-item">Open Image <span class="text-icon">📂</span></label>
             <input id="file-input" type="file" value="">
         </div>
-        <a id="save" onclick="saveImage(this)" class="tool-bar-item label-item">Save Image <span class="text-icon">💾</span></a>
+        <a id="save" onclick="saveImage(this)" class="tool-bar-item label-item">Save Image <span
+                class="text-icon">💾</span></a>
         <div id="rotate" class="tool-bar-item label-item">Rotate Image <span class="text-icon">⤾</span></div>
         <div id="paint-blur" class="tool-bar-item file-open">
             <form id="paint-form">
@@ -52,7 +58,7 @@
         </div>
     </div>
     <button id="about">About</button>
-    <div id="imageScrubberInfo">
+    <div id="about-info">
         <h1>Image Scrubber</h1>
         <h2>About</h2>
         <p>
@@ -84,18 +90,17 @@
             All processing happens directly in the browser — no information is stored or sent anywhere.
         </p>
     </div>
-    <div id="exifInformationHolder"><h2>Exif Data</h2><hr><br><pre id="exifData"></pre><button id="clear-data">Remove Exif Data</button></div>
-    <canvas id="imageCanvas"></canvas>
-    <canvas id="tempCanvas"></canvas>
-    <canvas id="holderCanvas"></canvas>
-    <canvas id="rotationCanvas"></canvas>
-    <canvas id="blurredCanvas"></canvas>
-    <canvas id="offscreenCanvas"></canvas>
-    <script type="text/javascript" src="scripts/jscolor.js"></script>
-    <script type="text/javascript" src="scripts/exif.js"></script>
-    <script type="text/javascript" src="scripts/openImage.js"></script>
-    <script type="text/javascript" src="scripts/stackblur.js"></script>
-    <script type="text/javascript" src="scripts/js.js"></script>
+    <div id="exif-info">
+        <h2>Exif Data</h2>
+        <hr><br>
+        <pre id="exif-data"></pre><button id="clear-data">Remove Exif Data</button>
+    </div>
+    <canvas id="image"></canvas>
+    <canvas id="temp"></canvas>
+    <canvas id="holder"></canvas>
+    <canvas id="rotation"></canvas>
+    <canvas id="blurred"></canvas>
+    <canvas id="offscreen"></canvas>
 </body>
 
 </html>
