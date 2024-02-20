@@ -6,33 +6,6 @@
 // Import Global Styles
 @import 'global.less';
 
-@media (max-width: 800px) {
-    #about-info {
-        max-height: 75%;
-    }
-
-    #tool-bar {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .tool-bar-item {
-        border: none;
-    }
-
-    #image {
-        position: absolute;
-        top: 60%;
-        max-height: 75%;
-    }
-
-    #clear-data {
-        position: absolute;
-        bottom: 10%;
-        left: 50%;
-        transform: translateX(-50%) translateY(-50%);
-    }
-}
-
 body {
     .flex(center, center, column);
 
@@ -61,12 +34,16 @@ body {
 
 #tool-bar {
     width: 100%;
-    border: 1px solid black;
+    border: 1px solid @dark-color[b];
     display: grid;
     grid-template-columns: repeat(6, 1fr);
+    padding: 1em;
+    box-shadow: 0px 20px 50px 5px @dark-color[b];
 
     .tool-bar-item {
         .flex(center, center);
+        color: @text-color;
+        font-family: @font[body];
 
         #file-input {
             display: none;
@@ -90,12 +67,16 @@ body {
         justify-content: center;
         align-items: center;
         position: relative;
+        border-radius: 1rem;
 
         &:hover,
         &:focus {
-            background: #ccc;
+            background: #ffffff12;
         }
+    }
 
+    #brush-size {
+        .flex(center, center, column);
     }
 }
 
@@ -208,7 +189,7 @@ body {
 #holder,
 #rotation,
 #blurred,
-#offscreenCanvas {
+#offscreen {
     position: absolute;
     top: -1000px;
     display: none;
@@ -224,4 +205,34 @@ body {
 
 .slider {
     width: 90%;
+    &:hover {
+        background: mix(@theme-color[blue], white, 10%);
+    }
+}
+
+@media (max-width: 800px) {
+    #about-info {
+        max-height: 75%;
+    }
+
+    #tool-bar {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .tool-bar-item {
+        border: none;
+    }
+
+    #image {
+        position: absolute;
+        top: 60%;
+        max-height: 75%;
+    }
+
+    #clear-data {
+        position: absolute;
+        bottom: 10%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+    }
 }

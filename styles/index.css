@@ -36,28 +36,6 @@ a {
 a:visited {
   color: #df6b96;
 }
-@media (max-width: 800px) {
-  #about-info {
-    max-height: 75%;
-  }
-  #tool-bar {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .tool-bar-item {
-    border: none;
-  }
-  #image {
-    position: absolute;
-    top: 60%;
-    max-height: 75%;
-  }
-  #clear-data {
-    position: absolute;
-    bottom: 10%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-  }
-}
 body {
   display: flex;
   justify-content: center;
@@ -85,15 +63,19 @@ body:not(.dragging) #drop-zone {
 }
 #tool-bar {
   width: 100%;
-  border: 1px solid black;
+  border: 1px solid #151515;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
+  padding: 1em;
+  box-shadow: 0px 20px 50px 5px #151515;
 }
 #tool-bar .tool-bar-item {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  color: #f5f5f5;
+  font-family: Helvetica;
 }
 #tool-bar .tool-bar-item #file-input {
   display: none;
@@ -113,10 +95,17 @@ body:not(.dragging) #drop-zone {
   justify-content: center;
   align-items: center;
   position: relative;
+  border-radius: 1rem;
 }
 #tool-bar .label-item:hover,
 #tool-bar .label-item:focus {
-  background: #ccc;
+  background: #ffffff12;
+}
+#tool-bar #brush-size {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 #about {
   position: fixed;
@@ -219,7 +208,7 @@ body:not(.dragging) #drop-zone {
 #holder,
 #rotation,
 #blurred,
-#offscreenCanvas {
+#offscreen {
   position: absolute;
   top: -1000px;
   display: none;
@@ -232,4 +221,29 @@ body:not(.dragging) #drop-zone {
 }
 .slider {
   width: 90%;
+}
+.slider:hover {
+  background: #f2fbff;
+}
+@media (max-width: 800px) {
+  #about-info {
+    max-height: 75%;
+  }
+  #tool-bar {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .tool-bar-item {
+    border: none;
+  }
+  #image {
+    position: absolute;
+    top: 60%;
+    max-height: 75%;
+  }
+  #clear-data {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
 }

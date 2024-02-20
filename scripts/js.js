@@ -42,17 +42,17 @@ canvas.addEventListener('touchmove', handleTouchMove);
 canvas.addEventListener('touchend', handleMouseUp);
 canvas.addEventListener('touchcancel', handleMouseUp);
 
-var brushSizeDiv = document.getElementById('brushSizeSlider');
+var brushSizeDiv = document.getElementById('size-slider');
 brushSizeDiv.onchange = populateBrushSize;
 
-var blurAmountDiv = document.getElementById('blurAmountSlider');
+var blurAmountDiv = document.getElementById('blur-slider');
 blurAmountDiv.onchange = populateBlurAmount;
 
 var paintColorForm = document.getElementById("paint-color");
 
 function populateBrushSize() {
     var biggerDimension = Math.max(canvas.width, canvas.height);
-    brushSize = Math.floor((document.getElementById('brushSizeSlider').value * biggerDimension) / brushAdjustment);
+    brushSize = Math.floor((brushSizeDiv.value * biggerDimension) / brushAdjustment);
     setCursor();
 }
 
@@ -127,8 +127,8 @@ paintColorButton.onclick = function () {
         painting = "paint";
     };
 
-// same as above, but for 'useBrush' options
-var brushFormElements = document.forms['brush-form'].elements['useBrush'];
+// same as above, but for 'use-brush' options
+var brushFormElements = document.forms['brush-form'].elements['use-brush'];
 
 for (var i = 0, len = brushFormElements.length; i < len; i++) {
 

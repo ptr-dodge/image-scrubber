@@ -43,19 +43,23 @@
         </div>
         <div id="brush-type" class="tool-bar-item">
             <form id="brush-form">
-                <input type="radio" id="round" name="useBrush" value="round" checked>
+                <input type="radio" id="round" name="use-brush" value="round" checked>
                 <label for="round">Brush </label><br>
-                <input type="radio" id="Area" name="useBrush" value="area">
-                <label for="Area">Rectangle</label><br>
-                <input type="radio" id="Tap" name="useBrush" value="tap">
-                <label for="Tap">Tap </label><br>
+                <input type="radio" id="area" name="use-brush" value="area">
+                <label for="area">Rectangle</label><br>
+                <input type="radio" id="tap" name="use-brush" value="tap">
+                <label for="tap">Tap </label><br>
             </form>
         </div>
-        <div id="brushSizeDiv" class="tool-bar-item">
-            <label for="brushSizeSlider">Brush Size</label><br>
-            <input type="range" min="10" max="100" value="55" class="slider" id="brushSizeSlider"><br>
-            <label for="blurAmountSlider">Blur Radius</label><br>
-            <input type="range" min="40" max="150" value="75" class="slider" id="blurAmountSlider">
+        <div id="brush-size" class="tool-bar-item">
+            <div class="row">
+                <label for="size-slider">Brush Size</label>
+                <input type="range" min="10" max="100" value="55" class="slider" id="size-slider">
+            </div>
+            <div class="row">
+                <label for="blur-slider">Blur Radius</label>
+                <input type="range" min="40" max="150" value="75" class="slider" id="blur-slider">
+            </div>
         </div>
     </div>
     <button id="about">About</button>
