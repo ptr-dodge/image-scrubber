@@ -1,3 +1,5 @@
+'use strict'
+
 const dropContainer = document.getElementById('drop-zone');
 const fileInput = document.getElementById('file-input');
 
@@ -82,8 +84,7 @@ function onFileChange(e) {
 
             brushSize = (50 * biggerDimension) / brushAdjustment;
             brushSizeDiv.value = 50;
-            blurAmount = scale(brushSize, 10, 157, 20, 150);
-            blurAmountDiv.value = blurAmount;
+            blurAmountDiv.value = scale(brushSize, 10, 157, 20, 150);
             setCursor();
         };
         img.src = event.target.result;

@@ -1,10 +1,12 @@
+// Import Global Styles
+@import 'global.less';
+
 // Cleaned, not finished.
 @background-color: @dark-color[d]; // Dark Grey
 @text-color: @light-color[a];
 @accent-color: #ff69b4; // Pink
+@tool-bar-height: 9em;
 
-// Import Global Styles
-@import 'global.less';
 
 body {
     .flex(center, center, column);
@@ -34,6 +36,7 @@ body {
 
 #tool-bar {
     width: 100%;
+    height: @tool-bar-height;
     border: 1px solid @dark-color[b];
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -174,25 +177,32 @@ body {
     }
 }
 
-#image {
-    position: absolute;
-    top: 56%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    max-width: 100%;
-    max-height: 82%;
-    z-index: -1;
-    cursor: crosshair;
-}
-
-#temp,
-#holder,
-#rotation,
-#blurred,
-#offscreen {
-    position: absolute;
-    top: -1000px;
+.canvases {
+    .flex(center, center);
+    // background: darken(rgb(69, 49, 87), 50%);
+    height: 100% - @tool-bar-height;
+    width: 75%;
+    margin: 1rem;
+    margin-top: 0;
+    border-radius: 0.25rem;
     display: none;
+
+    #image {
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+        aspect-ratio: auto;
+        cursor: crosshair;
+    }
+
+    #temp,
+    #holder,
+    #rotation,
+    #blurred,
+    #offscreen {
+        display: none;
+    }
+
 }
 
 #paint-color {
@@ -205,6 +215,7 @@ body {
 
 .slider {
     width: 90%;
+
     &:hover {
         background: mix(@theme-color[blue], white, 10%);
     }

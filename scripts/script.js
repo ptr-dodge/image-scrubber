@@ -11,50 +11,50 @@ function populateBlurAmount() {
 }
 
 function setCursor() {
-	if(brush == 'area'){
-		canvas.style.cursor = 'crosshair';
-	} else {	
-	    var cursorCanvas = document.createElement('canvas');
-	    var scaleX = canvas.getBoundingClientRect().width / canvas.width;
-	    cursorCanvas.width = brushSize * 2 * scaleX;
-	    cursorCanvas.height = brushSize * 2 * scaleX;
-	    var cursorCtx = cursorCanvas.getContext('2d');
-	
-	    cursorCtx.strokeStyle = '#000000';
-	    cursorCtx.beginPath();
-	    cursorCtx.arc(
-	        cursorCanvas.width / 2,
-	        cursorCanvas.height / 2,
-	        brushSize * scaleX - 2,
-	        0,
-	        Math.PI * 2
-	    );
-	    cursorCtx.closePath();
-	    cursorCtx.stroke();
-	
-	     // for visibility against dark backgrounds
-	    cursorCtx.strokeStyle = '#ffffff';
-	    cursorCtx.beginPath();
-	    cursorCtx.arc(
-	        cursorCanvas.width / 2,
-	        cursorCanvas.height / 2,
-	        brushSize * scaleX - 1,
-	        0,
-	        Math.PI * 2
-	    );
-	    cursorCtx.closePath();
-	    cursorCtx.stroke();
-	
-	    var cursorDataURL = cursorCanvas.toDataURL();
-	    canvas.style.cursor =
-	        'url(' +
-	        cursorDataURL +
-	        ') ' +
-	        cursorCanvas.width / 2 +
-	        ' ' +
-	        cursorCanvas.height / 2 +
-	        ', auto';
-	}
+    if (brush == 'area') {
+        canvas.style.cursor = 'crosshair';
+    } else {
+        var cursorCanvas = document.createElement('canvas');
+        var scaleX = canvas.getBoundingClientRect().width / canvas.width;
+        cursorCanvas.width = brushSize * 2 * scaleX;
+        cursorCanvas.height = brushSize * 2 * scaleX;
+        var cursorCtx = cursorCanvas.getContext('2d');
+
+        cursorCtx.strokeStyle = '#000000';
+        cursorCtx.beginPath();
+        cursorCtx.arc(
+            cursorCanvas.width / 2,
+            cursorCanvas.height / 2,
+            brushSize * scaleX - 2,
+            0,
+            Math.PI * 2
+        );
+        cursorCtx.closePath();
+        cursorCtx.stroke();
+
+        // for visibility against dark backgrounds
+        cursorCtx.strokeStyle = '#ffffff';
+        cursorCtx.beginPath();
+        cursorCtx.arc(
+            cursorCanvas.width / 2,
+            cursorCanvas.height / 2,
+            brushSize * scaleX - 1,
+            0,
+            Math.PI * 2
+        );
+        cursorCtx.closePath();
+        cursorCtx.stroke();
+
+        var cursorDataURL = cursorCanvas.toDataURL();
+        canvas.style.cursor =
+            'url(' +
+            cursorDataURL +
+            ') ' +
+            cursorCanvas.width / 2 +
+            ' ' +
+            cursorCanvas.height / 2 +
+            ', auto';
+    }
 }
 
 function saveImage() {
@@ -99,7 +99,7 @@ function handleMouseDown(e) {
     tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
     isDown = true;
     lastPos = getMousePos(canvas, e);
-    if (brush == "tap"){
+    if (brush == "tap") {
         handleMouseMove(e);
     }
 
@@ -108,10 +108,7 @@ function handleMouseDown(e) {
 function handleMouseOut(e) {
     e.preventDefault();
     e.stopPropagation();
-
-    if (isDown != false) {
-        handleMouseUp(e);
-    }
+    if (isDown != false) handleMouseUp(e)
 }
 
 function handleMouseMove(event) {
@@ -136,9 +133,9 @@ function handleTouchStart(e) {
     }
 
     touch = event.changedTouches[0]; // get the position information
-	
-	
-	
+
+
+
     var mouseEvent = new MouseEvent( // create event
         'mousedown', // type of event
         {
@@ -156,16 +153,16 @@ function handleTouchStart(e) {
 
 }
 
-function handleTouchMove(e) {
-    if (e.touches.length > 1) {
+function handleTouchMove(event) {
+    if (event.touches.length > 1) {
         // Ignore multi touch events
         return;
     }
 
     touch = event.changedTouches[0]; // get the position information
-	
-	
-	
+
+
+
     var mouseEvent = new MouseEvent( // create event
         'mousemove', // type of event
         {
@@ -201,7 +198,7 @@ function handleMouseUp(e) {
         }
 
         //blur command is here - undo brush is this same command, but run w radius zero
-        
+
         stackBlurCanvasRGBA(
             'blurred',
             0,
@@ -226,32 +223,32 @@ function handleMouseUp(e) {
 }
 
 function drawMousePath(mouseX, mouseY) {
-        if (painting == 'undo') {
-            paintColor = "#ffffff"
-        }
-        if (painting == 'blur') {
-            paintColor = "#000000"
-        }
-        else if (painting == 'paint') {
-            paintColor = (paintColorForm.style.backgroundColor)// change to color
-        }
-    switch(brush){
-		case 'round':
-			interpolatePath(ctx, lastPos.x, lastPos.y, mouseX, mouseY, brushSize);
-    		interpolatePath(tempCtx, lastPos.x, lastPos.y, mouseX, mouseY, brushSize);
-			break;
-		case 'area':
-			areaDraw(ctx, mouseX, mouseY, true);
-			areaDraw(tempCtx, mouseX, mouseY, false);
-			break;
+    if (painting == 'undo') {
+        paintColor = "#ffffff"
+    }
+    if (painting == 'blur') {
+        paintColor = "#000000"
+    }
+    else if (painting == 'paint') {
+        paintColor = (paintColorForm.style.backgroundColor)// change to color
+    }
+    switch (brush) {
+        case 'round':
+            interpolatePath(ctx, lastPos.x, lastPos.y, mouseX, mouseY, brushSize);
+            interpolatePath(tempCtx, lastPos.x, lastPos.y, mouseX, mouseY, brushSize);
+            break;
+        case 'area':
+            areaDraw(ctx, mouseX, mouseY, true);
+            areaDraw(tempCtx, mouseX, mouseY, false);
+            break;
         case 'tap':
             tapDraw(ctx, mouseX, mouseY, brushSize);
             tapDraw(tempCtx, mouseX, mouseY, brushSize);
             break;
-		default:
-			//this means that brush had either no value or an unlisted value, which should never happen
-			console.log('brush switch error')
-	}
+        default:
+            //this means that brush had either no value or an unlisted value, which should never happen
+            console.log('brush switch error')
+    }
 }
 
 function interpolatePath(pathCtx, x1, y1, x2, y2, r) {
@@ -261,8 +258,8 @@ function interpolatePath(pathCtx, x1, y1, x2, y2, r) {
 
     // Draw rectangle from last point
     pathCtx.beginPath();
-    pathCtx.moveTo(x1,y1);
-    pathCtx.lineTo(x2,y2);
+    pathCtx.moveTo(x1, y1);
+    pathCtx.lineTo(x2, y2);
     pathCtx.closePath();
     pathCtx.lineWidth = 2 * r;
     pathCtx.stroke();
@@ -286,28 +283,28 @@ function tapDraw(pathCtx, mouseX, mouseY, r) {
     pathCtx.fill();
 }
 
-function areaDraw(pathCtx, mouseX, mouseY, redraw){
+function areaDraw(pathCtx, mouseX, mouseY, redraw) {
 
-	//clear any previous drawings and restore image
-	pathCtx.clearRect(0, 0, canvas.width, canvas.height);
-	
-	//determines if we need to redraw image after clearing canvas
-	if(redraw){
-		pathCtx.drawImage(holderCanvas, 0, 0);
-	}
-	pathCtx.beginPath();
-	
-	//calculate width and height of rectangle based on start posisions and current positions
-	var width = mouseX-mouseX_start;
-	var height = mouseY-mouseY_start;
-	
-	//draw current rectangle
-	pathCtx.rect(mouseX_start,mouseY_start,width,height);
-	pathCtx.strokeStyle = paintColor;
+    //clear any previous drawings and restore image
+    pathCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+    //determines if we need to redraw image after clearing canvas
+    if (redraw) {
+        pathCtx.drawImage(holderCanvas, 0, 0);
+    }
+    pathCtx.beginPath();
+
+    //calculate width and height of rectangle based on start posisions and current positions
+    var width = mouseX - mouseX_start;
+    var height = mouseY - mouseY_start;
+
+    //draw current rectangle
+    pathCtx.rect(mouseX_start, mouseY_start, width, height);
+    pathCtx.strokeStyle = paintColor;
     pathCtx.fillStyle = paintColor;
-	pathCtx.lineWidth = 10;
-	pathCtx.stroke();
-	pathCtx.fill();
+    pathCtx.lineWidth = 10;
+    pathCtx.stroke();
+    pathCtx.fill();
 }
 
 function getMousePos(canvas, evt) {
@@ -330,15 +327,15 @@ function pixelateCanvas(inCanvas, inCtx) {
     var biggerDimension = Math.max(inCanvas.width, inCanvas.height);
 
     var size = scale(biggerDimension, 10, 2500, 0.1, 0.015);
-    w = inCanvas.width * size;
-    h = inCanvas.height * size;
+    let w = inCanvas.width * size;
+    let h = inCanvas.height * size;
 
     offscreenCanvas.width = inCanvas.width; //w;
     offscreenCanvas.height = inCanvas.height; //h;
 
     offscreenCtx.drawImage(inCanvas, 0, 0, w, h);
-    offscreenCtx.scale(w*size,h*size);
-    
+    offscreenCtx.scale(w * size, h * size);
+
     inCtx.save();
 
     // turn off image aliasing for a pixely look - currently off
@@ -360,8 +357,8 @@ function pixelateCanvas(inCanvas, inCtx) {
         inCanvas.height
     );
 
-    pixelArray = offscreenCtx.getImageData(0, 0, w, h);
-    pixelArray.data = shuffle(pixelArray.data);
+    let pixelArray = offscreenCtx.getImageData(0, 0, w, h);
+    // pixelArray.data = shuffle(pixelArray.data);
 
     offscreenCtx.putImageData(pixelArray, 0, 0);
 
@@ -382,7 +379,9 @@ function pixelateCanvas(inCanvas, inCtx) {
 }
 
 function shuffle(array) {
-    //this should maybe just be running on the blur path not the whole canvas - however i'd need to refactor the way the data is passed around in general so for now it runs on the whole canvas
+    // This should maybe just be running on the blur path not the whole canvas
+    // I'd need to refactor the way the data is passed around in general.
+    // So for now it runs on the whole canvas
 
     var biggerDimension = Math.max(canvas.width, canvas.height);
     var holderArray = [];
@@ -391,27 +390,19 @@ function shuffle(array) {
         var red = array[i];
         var green = array[i + 1];
         var blue = array[i + 2];
-        //var alpha = array[i + 3];
+        // var alpha = array[i + 3];
 
         if (red + green + blue != 0) {
-            holderArray.push([i, array[i], array[i + 1], array[i + 2]]);
+            holderArray.push([i, red, green, blue]);
         }
     }
 
-    for (x = 0; x < holderArray.length; x++) {
+    for (let x = 0; x < holderArray.length; x++) {
 
         // Gets a random element within biggerDimension/100 pixels of this one - in the linear pixel array, its kind of silly but it works! always skews horizontal. might want to come back through and do something nicer but its getting blurred anyway so eh
-        var randomElement =
-            x +
-            Math.floor(
-                randomCryptoNumber() *
-                    (biggerDimension / 100) *
-                    negativeOrPositive()
-            );
+        var randomElement = x + Math.floor(randomCryptoNumber() * (biggerDimension / 100) * negativeOrPositive());
 
-        if (randomElement >= holderArray.length || randomElement < 0) {
-            randomElement = x;
-        }
+        if (randomElement >= holderArray.length || randomElement < 0) randomElement = x;
 
         // Added some noise to the pixels when shifted so they should be very hard to next-neighbor stitch back together, even without the aliasing and blur
         array[holderArray[x][0]] =
@@ -490,36 +481,35 @@ blurAmountDiv.onchange = populateBlurAmount;
 
 var paintColorForm = document.getElementById("paint-color");
 
-
 // get list of radio buttons with name 'paint-form'
 var paintFormElements = document.forms['paint-form'].elements['painting-action'];
 
 // loop through list
 for (var i = 0, len = paintFormElements.length; i < len; i++) {
-    if (paintFormElements[i].value == "blur"){
+    if (paintFormElements[i].value == "blur") {
         paintFormElements[i].checked = true;
     }
-    paintFormElements[i].onclick = function () {
+    paintFormElements[i].onclick = () => {
         painting = this.value;
     };
 }
 
 var paintColorButton = document.getElementById("paint-color");
 paintColorButton.onclick = function () {
-        document.getElementById("paint").checked = true;
-        painting = "paint";
-    };
+    document.getElementById("paint").checked = true;
+    painting = "paint";
+};
 
 // Same as above, but for 'use-brush' options
 var brushFormElements = document.forms['brush-form'].elements['use-brush'];
 for (var i = 0, len = brushFormElements.length; i < len; i++) {
 
-    if (brushFormElements[i].value == "round"){
+    if (brushFormElements[i].value == "round") {
         brushFormElements[i].checked = true;
     }
     brushFormElements[i].onclick = function () {
         brush = this.value;
-		populateBrushSize();
+        populateBrushSize();
     };
 }
 
@@ -612,6 +602,10 @@ const scale = (num, in_min, in_max, out_min, out_max) => {
     return ((num - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
 };
 
+const openFile = document.querySelector("#file-input")
+openFile.addEventListener("click", () => { document.querySelector(".canvases").style.display = 'flex' })
+
+// This code is horrendously messy, but as far as I am concerned, it works for now.
 // > Bits of this code lifted and adapted from various jsfiddles and libraries --
 // # Thank you to:
 // http://jsfiddle.net/sierawski/4xezb7nL/
