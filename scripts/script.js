@@ -1,54 +1,4 @@
-var filename;
-var img;
-var canvasScale;
-
-var isDown = false;
-var painting = false;
-var brush = "round"; //default to round brush at start
-var paintColor = "#000";
-var mouseX_start;
-var mouseY_start;
-var lastPos;
-
-var canvas = document.getElementById('image');
-var ctx = canvas.getContext('2d');
-
-var tempCanvas = document.getElementById('temp');
-var tempCtx = tempCanvas.getContext('2d');
-
-var holderCanvas = document.getElementById('holder');
-var holderCtx = holderCanvas.getContext('2d');
-
-var rotationCanvas = document.getElementById('rotation');
-var rotationCtx = rotationCanvas.getContext('2d');
-
-var blurredCanvas = document.getElementById('blurred');
-var blurredCtx = blurredCanvas.getContext('2d');
-
-var offscreenCanvas = document.getElementById('offscreen');
-var offscreenCtx = offscreenCanvas.getContext('2d');
-
-// these are placeholders - i map this later on in the set canvas size
-var brushSize = 50;
-var brushAdjustment = 800;
-
-canvas.addEventListener('mousedown', handleMouseDown);
-canvas.addEventListener('mousemove', handleMouseMove);
-canvas.addEventListener('mouseup', handleMouseUp);
-canvas.addEventListener('mouseout', handleMouseOut);
-
-canvas.addEventListener('touchstart', handleTouchStart);
-canvas.addEventListener('touchmove', handleTouchMove);
-canvas.addEventListener('touchend', handleMouseUp);
-canvas.addEventListener('touchcancel', handleMouseUp);
-
-var brushSizeDiv = document.getElementById('size-slider');
-brushSizeDiv.onchange = populateBrushSize;
-
-var blurAmountDiv = document.getElementById('blur-slider');
-blurAmountDiv.onchange = populateBlurAmount;
-
-var paintColorForm = document.getElementById("paint-color");
+'use strict'
 
 function populateBrushSize() {
     var biggerDimension = Math.max(canvas.width, canvas.height);
@@ -59,7 +9,6 @@ function populateBrushSize() {
 function populateBlurAmount() {
     brushSize = Math.floor(this.value);
 }
-
 
 function setCursor() {
 	if(brush == 'area'){
@@ -106,39 +55,6 @@ function setCursor() {
 	        cursorCanvas.height / 2 +
 	        ', auto';
 	}
-}
-
-// get list of radio buttons with name 'paint-form'
-var paintFormElements = document.forms['paint-form'].elements['painting-action'];
-
-// loop through list
-for (var i = 0, len = paintFormElements.length; i < len; i++) {
-    if (paintFormElements[i].value == "blur"){
-        paintFormElements[i].checked = true;
-    }
-    paintFormElements[i].onclick = function () {
-        painting = this.value;
-    };
-}
-
-var paintColorButton = document.getElementById("paint-color");
-paintColorButton.onclick = function () {
-        document.getElementById("paint").checked = true;
-        painting = "paint";
-    };
-
-// same as above, but for 'use-brush' options
-var brushFormElements = document.forms['brush-form'].elements['use-brush'];
-
-for (var i = 0, len = brushFormElements.length; i < len; i++) {
-
-    if (brushFormElements[i].value == "round"){
-        brushFormElements[i].checked = true;
-    }
-    brushFormElements[i].onclick = function () {
-        brush = this.value;
-		populateBrushSize();
-    };
 }
 
 function saveImage() {
@@ -198,21 +114,19 @@ function handleMouseOut(e) {
     }
 }
 
-function handleMouseMove(e) {
-    var pos = getMousePos(canvas, e);
-    posx = pos.x;
-    posy = pos.y;
+function handleMouseMove(event) {
+    let pos = getMousePos(canvas, event);
 
-    if (!isDown) {
-        return;
-    }
-    e.preventDefault();
-    e.stopPropagation();
+    if (!isDown) return
+
+    event.preventDefault();
+    event.stopPropagation();
     drawMousePath(pos.x, pos.y);
     lastPos = pos;
 }
 
-function handleTouchStart(e) { //added to properly handle start point for area draw
+// Added to properly handle start point for area draw
+function handleTouchStart(e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -360,7 +274,6 @@ function interpolatePath(pathCtx, x1, y1, x2, y2, r) {
     pathCtx.fill();
 }
 
-
 function tapDraw(pathCtx, mouseX, mouseY, r) {
 
     pathCtx.strokeStyle = paintColor;
@@ -409,99 +322,10 @@ function getMousePos(canvas, evt) {
     };
 }
 
-var button = document.getElementById('about');
-button.onclick = function () {
-    var imageScrubberInfo = document.getElementById('about-info');
-    if (imageScrubberInfo.style.display == 'none') {
-        imageScrubberInfo.style.display = 'block';
-    } else {
-        imageScrubberInfo.style.display = 'none';
-    }
-};
-
-// rotate the canvas 90 degrees each time the button is pressed
-var button = document.getElementById('rotate');
-button.onclick = function () {
-    rotate();
-};
-
-//this function is very laggy and i'm sure there is a better way - should rewrite it soon
-var myImageData,
-    tempImageData,
-    holderImageData,
-    blurredImageData,
-    rotating = false;
-
-var rotate = function () {
-    if (!rotating) {
-        rotating = true;
-        // store current data to an image
-        myImageData = new Image();
-        tempImageData = new Image();
-        rotationImageData = new Image();
-        blurredImageData = new Image();
-
-        myImageData.src = canvas.toDataURL();
-        tempImageData.src = tempCanvas.toDataURL();
-        rotationImageData.src = rotationCanvas.toDataURL();
-        blurredImageData.src = blurredCanvas.toDataURL();
-
-        //holderImageData.src = holderCanvas.toDataURL();
-
-        myImageData.onload = function () {
-            // reset the canvas with new dimensions
-            cw = canvas.width;
-            ch = canvas.height;
-            canvas.width = tempCanvas.width = holderCanvas.width = rotationCanvas.width = blurredCanvas.width = ch;
-            canvas.height = tempCanvas.height = holderCanvas.height = rotationCanvas.height = blurredCanvas.height = cw;
-            cw = canvas.width;
-            ch = canvas.height;
-
-            ctx.save();
-            // translate and rotate
-            ctx.translate(cw, ch / cw);
-            ctx.rotate(Math.PI / 2);
-            // draw the previows image, now rotated
-            ctx.drawImage(myImageData, 0, 0);
-            ctx.restore();
-
-            tempCtx.save();
-            tempCtx.translate(cw, ch / cw);
-            tempCtx.rotate(Math.PI / 2);
-            tempCtx.drawImage(tempImageData, 0, 0);
-            tempCtx.restore();
-
-            rotationCtx.save();
-            rotationCtx.translate(cw, ch / cw);
-            rotationCtx.rotate(Math.PI / 2);
-            rotationCtx.drawImage(rotationImageData, 0, 0);
-            rotationCtx.restore();
-
-            blurredCtx.save();
-            blurredCtx.translate(cw, ch / cw);
-            blurredCtx.rotate(Math.PI / 2);
-            blurredCtx.drawImage(rotationImageData, 0, 0);
-            blurredCtx.restore();
-
-            //don't need to rotate the holder as it gets cleared anyway.
-
-            // clear the temporary image
-            myImageData = null;
-            tempImageData = null;
-            blurredImageData = null;
-
-            rotating = false;
-        };
-    }
-};
-
-const scale = (num, in_min, in_max, out_min, out_max) => {
-    return ((num - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
-};
-
 function pixelateCanvas(inCanvas, inCtx) {
-    // so - smaller canvases also need to scale down less, because they get too small to render anything
-    //just gonna use a map function for now
+    // Smaller canvases also need to scale down less
+    // because they get too small to render anything
+    // Just gonna use a map function for now
 
     var biggerDimension = Math.max(inCanvas.width, inCanvas.height);
 
@@ -575,8 +399,8 @@ function shuffle(array) {
     }
 
     for (x = 0; x < holderArray.length; x++) {
-        //gets a random element within biggerDimension/100 pixels of this one - in the linear pixel array, its kind of silly but it works! always skews horizontal. might want to come back through and do something nicer but its getting blurred anyway so eh
 
+        // Gets a random element within biggerDimension/100 pixels of this one - in the linear pixel array, its kind of silly but it works! always skews horizontal. might want to come back through and do something nicer but its getting blurred anyway so eh
         var randomElement =
             x +
             Math.floor(
@@ -589,8 +413,7 @@ function shuffle(array) {
             randomElement = x;
         }
 
-        //added some noise to the pixels when shifted so they should be very hard to next-neighbor stitch back together, even without the aliasing and blur
-
+        // Added some noise to the pixels when shifted so they should be very hard to next-neighbor stitch back together, even without the aliasing and blur
         array[holderArray[x][0]] =
             holderArray[randomElement][1] +
             Math.round(randomCryptoNumber() * negativeOrPositive() * 3);
@@ -604,7 +427,6 @@ function shuffle(array) {
     return array;
 }
 
-
 function randomCryptoNumber() {
     var buf = new Uint8Array(1);
     window.crypto.getRandomValues(buf);
@@ -616,22 +438,189 @@ function negativeOrPositive() {
     return randomCryptoNumber() < 0.5 ? -1 : 1;
 }
 
+var filename;
+var img;
+var canvasScale;
+
+var isDown = false;
+var painting = false;
+var brush = "round"; //default to round brush at start
+var paintColor = "#000";
+var mouseX_start;
+var mouseY_start;
+var lastPos;
+
+var canvas = document.getElementById('image');
+var ctx = canvas.getContext('2d');
+
+var tempCanvas = document.getElementById('temp');
+var tempCtx = tempCanvas.getContext('2d');
+
+var holderCanvas = document.getElementById('holder');
+var holderCtx = holderCanvas.getContext('2d');
+
+var rotationCanvas = document.getElementById('rotation');
+var rotationCtx = rotationCanvas.getContext('2d');
+
+var blurredCanvas = document.getElementById('blurred');
+var blurredCtx = blurredCanvas.getContext('2d');
+
+var offscreenCanvas = document.getElementById('offscreen');
+var offscreenCtx = offscreenCanvas.getContext('2d');
+
+// these are placeholders - i map this later on in the set canvas size
+var brushSize = 50;
+var brushAdjustment = 800;
+
+canvas.addEventListener('mousedown', handleMouseDown);
+canvas.addEventListener('mousemove', handleMouseMove);
+canvas.addEventListener('mouseup', handleMouseUp);
+canvas.addEventListener('mouseout', handleMouseOut);
+
+canvas.addEventListener('touchstart', handleTouchStart);
+canvas.addEventListener('touchmove', handleTouchMove);
+canvas.addEventListener('touchend', handleMouseUp);
+canvas.addEventListener('touchcancel', handleMouseUp);
+
+var brushSizeDiv = document.getElementById('size-slider');
+brushSizeDiv.onchange = populateBrushSize;
+
+var blurAmountDiv = document.getElementById('blur-slider');
+blurAmountDiv.onchange = populateBlurAmount;
+
+var paintColorForm = document.getElementById("paint-color");
 
 
+// get list of radio buttons with name 'paint-form'
+var paintFormElements = document.forms['paint-form'].elements['painting-action'];
 
+// loop through list
+for (var i = 0, len = paintFormElements.length; i < len; i++) {
+    if (paintFormElements[i].value == "blur"){
+        paintFormElements[i].checked = true;
+    }
+    paintFormElements[i].onclick = function () {
+        painting = this.value;
+    };
+}
 
+var paintColorButton = document.getElementById("paint-color");
+paintColorButton.onclick = function () {
+        document.getElementById("paint").checked = true;
+        painting = "paint";
+    };
 
-//bits of this code lifted and adapted from various jsfiddles and libraries --
-//thank you:
-//http://jsfiddle.net/sierawski/4xezb7nL/
-//https://stackoverflow.com/questions/22604903/needed-canvas-blurring-tool
-//http://jsfiddle.net/m1erickson/baDLp/
-//view-source:https://storage.flother.is/etc/2010/examples/canvas-blur/v3/canvas-image.js
-//http://quasimondo.com/StackBlurForCanvas/StackBlur.js
-//https://github.com/exif-js/exif-js
-//http://jsfiddle.net/4cwpLvae/
-//https://stackoverflow.com/questions/16645801/rotate-canvas-90-degrees-clockwise-and-update-width-height
-//https://stackoverflow.com/questions/19129644/how-to-pixelate-an-image-with-canvas-and-javascript
-//https://devbutze.blogspot.com/2014/02/html5-canvas-offscreen-rendering.html
+// Same as above, but for 'use-brush' options
+var brushFormElements = document.forms['brush-form'].elements['use-brush'];
+for (var i = 0, len = brushFormElements.length; i < len; i++) {
 
-/// // // /
+    if (brushFormElements[i].value == "round"){
+        brushFormElements[i].checked = true;
+    }
+    brushFormElements[i].onclick = function () {
+        brush = this.value;
+		populateBrushSize();
+    };
+}
+
+var aboutBtn = document.getElementById('about');
+aboutBtn.onclick = function () {
+    var imageScrubberInfo = document.getElementById('about-info');
+    if (imageScrubberInfo.style.display == 'none') {
+        imageScrubberInfo.style.display = 'block';
+    } else {
+        imageScrubberInfo.style.display = 'none';
+    }
+};
+
+// rotate the canvas 90 degrees each time the button is pressed
+var rotateBtn = document.getElementById('rotate');
+rotateBtn.onclick = function () {
+    rotate();
+};
+
+//this function is very laggy and i'm sure there is a better way - should rewrite it soon
+var myImageData,
+    tempImageData,
+    holderImageData,
+    rotationImageData,
+    blurredImageData,
+    rotating = false;
+
+var rotate = function () {
+    if (!rotating) {
+        rotating = true;
+        // store current data to an image
+        myImageData = new Image();
+        tempImageData = new Image();
+        rotationImageData = new Image();
+        blurredImageData = new Image();
+
+        myImageData.src = canvas.toDataURL();
+        tempImageData.src = tempCanvas.toDataURL();
+        rotationImageData.src = rotationCanvas.toDataURL();
+        blurredImageData.src = blurredCanvas.toDataURL();
+
+        //holderImageData.src = holderCanvas.toDataURL();
+
+        myImageData.onload = function () {
+            // reset the canvas with new dimensions
+            let cw = canvas.width;
+            let ch = canvas.height;
+            canvas.width = tempCanvas.width = holderCanvas.width = rotationCanvas.width = blurredCanvas.width = ch;
+            canvas.height = tempCanvas.height = holderCanvas.height = rotationCanvas.height = blurredCanvas.height = cw;
+
+            ctx.save();
+            // translate and rotate
+            ctx.translate(cw, ch / cw);
+            ctx.rotate(Math.PI / 2);
+            // draw the previows image, now rotated
+            ctx.drawImage(myImageData, 0, 0);
+            ctx.restore();
+
+            tempCtx.save();
+            tempCtx.translate(cw, ch / cw);
+            tempCtx.rotate(Math.PI / 2);
+            tempCtx.drawImage(tempImageData, 0, 0);
+            tempCtx.restore();
+
+            rotationCtx.save();
+            rotationCtx.translate(cw, ch / cw);
+            rotationCtx.rotate(Math.PI / 2);
+            rotationCtx.drawImage(rotationImageData, 0, 0);
+            rotationCtx.restore();
+
+            blurredCtx.save();
+            blurredCtx.translate(cw, ch / cw);
+            blurredCtx.rotate(Math.PI / 2);
+            blurredCtx.drawImage(rotationImageData, 0, 0);
+            blurredCtx.restore();
+
+            //don't need to rotate the holder as it gets cleared anyway.
+
+            // clear the temporary image
+            myImageData = null;
+            tempImageData = null;
+            blurredImageData = null;
+
+            rotating = false;
+        };
+    }
+};
+
+const scale = (num, in_min, in_max, out_min, out_max) => {
+    return ((num - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
+};
+
+// > Bits of this code lifted and adapted from various jsfiddles and libraries --
+// # Thank you to:
+// http://jsfiddle.net/sierawski/4xezb7nL/
+// https://stackoverflow.com/questions/22604903/needed-canvas-blurring-tool
+// http://jsfiddle.net/m1erickson/baDLp/
+// https://storage.flother.is/etc/2010/examples/canvas-blur/v3/canvas-image.js
+// http://quasimondo.com/StackBlurForCanvas/StackBlur.js
+// https://github.com/exif-js/exif-js
+// http://jsfiddle.net/4cwpLvae/
+// https://stackoverflow.com/questions/16645801/rotate-canvas-90-degrees-clockwise-and-update-width-height
+// https://stackoverflow.com/questions/19129644/how-to-pixelate-an-image-with-canvas-and-javascript
+// https://devbutze.blogspot.com/2014/02/html5-canvas-offscreen-rendering.html
